@@ -27,24 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      
-      - name: Fetch keywords from SharePoint
-        id: get_keywords
-        env:
-          SHAREPOINT_SITE: ${{ secrets.SHAREPOINT_SITE }}
-          SHAREPOINT_CLIENT_ID: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-          SHAREPOINT_CLIENT_SECRET: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
-        run: |
-          python scripts/fetch_keywords.py
-      
-      - name: Fetch sources from SharePoint
-        id: get_sources
-        env:
-          SHAREPOINT_SITE: ${{ secrets.SHAREPOINT_SITE }}
-          SHAREPOINT_CLIENT_ID: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-          SHAREPOINT_CLIENT_SECRET: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
-        run: |
-          python scripts/fetch_sources.py
+    
       
       - name: Scrape all sources
         id: scrape
