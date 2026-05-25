@@ -7,7 +7,6 @@ on:
   workflow_dispatch:  # Manual trigger for testing
 
 env:
-  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
   POWER_AUTOMATE_WEBHOOK: ${{ secrets.POWER_AUTOMATE_WEBHOOK }}
 
 jobs:
@@ -51,11 +50,6 @@ jobs:
         id: scrape
         run: |
           python scripts/scrape_all.py
-      
-      - name: Summarize with Claude AI
-        id: summarize
-        run: |
-          python scripts/summarize_articles.py
       
       - name: Send to Power Automate
         run: |
