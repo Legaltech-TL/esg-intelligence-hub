@@ -11,10 +11,14 @@ def load_sources():
     sources = []
     
     try:
-        with open('config/sources.csv', 'r', encoding='utf-8') as f:
+        with open('config/sources.csv', 'r', encoding='utf-8-sig') as f:  # utf-8-sig handles BOM
             reader = csv.DictReader(f)
             for row in reader:
-                if row.get('Active') == 'Yes':
+                # Strip whitespace from all values
+                row = {k: v.strip() if isinstance(v, str) else v for k, v in row.items()}
+                
+                # Check if active (case-insensitive)
+                if row.get('Active', '').lower() == 'yes':
                     sources.append({
                         'name': row['Title'],
                         'url': row['URL'],
@@ -32,6 +36,8 @@ def load_sources():
         
     except Exception as e:
         print(f"::error::Failed to load sources: {e}")
+        import traceback
+        traceback.print_exc()  # Print full error for debugging
         return []
 
 if __name__ == "__main__":
