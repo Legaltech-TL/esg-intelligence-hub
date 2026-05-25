@@ -27,7 +27,14 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-    
+      
+      - name: Load keywords from CSV
+        run: |
+          python scripts/fetch_keywords.py
+      
+      - name: Load sources from CSV
+        run: |
+          python scripts/fetch_sources.py
       
       - name: Scrape all sources
         id: scrape
@@ -45,7 +52,6 @@ jobs:
           name: scraping-results-${{ github.run_number }}
           path: |
             data/articles.json
-            data/summaries.json
             logs/
           retention-days: 7
       
@@ -53,4 +59,3 @@ jobs:
         if: failure()
         run: |
           echo "::error::ESG scraper failed. Check logs."
-          # Optional: Send notification to Teams/Slack
