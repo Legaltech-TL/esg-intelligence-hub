@@ -30,7 +30,7 @@ def scrape_rss(source, keywords):
         if feed.bozo:
             print(f"  ::warning::Feed parsing issues for {source['name']}")
         
-        cutoff_time = datetime.now() - timedelta(hours=24)
+        cutoff_time = datetime.now() - timedelta(hours=240)
         articles = []
         
         for entry in feed.entries[:50]:  # Limit to 50 entries
