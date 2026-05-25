@@ -1,0 +1,19 @@
+Title	URL	SourceType	Category	Active	CSSSelector	ScrapingNotes
+GeM CPPP	https://gem.gov.in/cppp	Web	Tenders	Yes	.tender-list	Government e-Marketplace tender listings
+GeM List of Bids	https://gem.gov.in/all_bids	Web	Tenders	Yes	.bid-item	All active bids on GeM
+ESG Today	https://www.esgtoday.com/feed/	RSS	Real Time Updates	Yes		Primary ESG news aggregator
+Trellis / GreenBiz	https://www.greenbiz.com/feed	RSS	Real Time Updates	Yes		Sustainability business news
+EsgNews.com	https://esgnews.com/feed/	RSS	Real Time Updates	Yes		ESG news and analysis
+Sustainability Magazine	https://sustainabilitymag.com/feed	RSS	Real Time Updates	Yes		Sustainability industry news
+ESG Dive	https://www.esgdive.com/feeds/news/	RSS	Real Time Updates	Yes		ESG regulatory and market news
+ESG Clarity	https://esgclarity.com/feed/	RSS	Real Time Updates	Yes		ESG investment news
+ESG Investing	https://www.esginvesting.co.uk/feed/	RSS	Real Time Updates	Yes		UK-focused ESG investment
+Financial Advisor Magazine	https://www.fa-mag.com/rss/channel/esg.xml	RSS	Real Time Updates	Yes		ESG financial advisory
+Environmental Finance	https://www.environmental-finance.com/feed	RSS	Real Time Updates	Yes		Green finance and carbon markets
+GreenMoney	https://greenmoney.com/feed/	RSS	Real Time Updates	Yes		Sustainable investing
+Mondaq	https://www.mondaq.com/rss/16/Environment	RSS	Real Time Updates	Yes		Legal and regulatory updates
+Government of India PIB	https://pib.gov.in/allRel.aspx	Web	Government	Yes	.content-area	Press Information Bureau releases
+SEBI Master Circular	https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListingMaster=yes	Web	Regulations	Yes	.table-list	SEBI master circulars listing
+SEBI Circulars	https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes	Web	Regulations	Yes	.circular-row	All SEBI circulars
+SEBI Gazette Notification	https://www.sebi.gov.in/legal/regulations.html	Web	Regulations	Yes	.notification-item	Official gazette notifications
+
