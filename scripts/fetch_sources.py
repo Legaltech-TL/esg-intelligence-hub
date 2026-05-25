@@ -11,22 +11,24 @@ def load_sources():
     sources = []
     
     try:
-        with open('config/sources.csv', 'r', encoding='utf-8-sig') as f:  # utf-8-sig handles BOM
+        with open('config/sources.csv', 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
+            
             for row in reader:
-                # Strip whitespace from all values
-                row = {k: v.strip() if isinstance(v, str) else v for k, v in row.items()}
+                # Strip whitespace from keys and values
+                row = {k.strip(): v.strip() if isinstance(v, str) else v for k, v in row.items()}
                 
                 # Check if active (case-insensitive)
                 if row.get('Active', '').lower() == 'yes':
                     sources.append({
-                        'name': row['Title'],
-                        'url': row['URL'],
-                        'type': row['SourceType'],
-                        'category': row['Category'],
+                        'name': row.get('Title', ''),
+                        'url': row.get('URL', ''),
+                        'type': row.get('SourceType', 'RSS'),
+                        'category': row.get('Category', 'General'),
                         'selector': row.get('CSSSelector', 'article')
                     })
         
+        # Save for next steps
         os.makedirs('data', exist_ok=True)
         with open('data/sources.json', 'w') as f:
             json.dump(sources, f, indent=2)
@@ -37,7 +39,7 @@ def load_sources():
     except Exception as e:
         print(f"::error::Failed to load sources: {e}")
         import traceback
-        traceback.print_exc()  # Print full error for debugging
+        traceback.print_exc()
         return []
 
 if __name__ == "__main__":
