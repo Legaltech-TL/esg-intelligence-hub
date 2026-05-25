@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Send summarized articles to Power Automate via HTTP webhook
+Send scraped articles to Power Automate via HTTP webhook
+(No AI summarization - Power Automate will handle it)
 """
 import json
 import os
@@ -8,16 +9,16 @@ import sys
 import requests
 from datetime import datetime
 
-def load_summaries():
-    """Load summarized articles"""
+def load_articles():
+    """Load scraped articles"""
     try:
-        with open('data/summaries.json', 'r') as f:
+        with open('data/articles.json', 'r') as f:
             return json.load(f)
     except Exception as e:
-        print(f"::error::Failed to load summaries: {e}")
-        return None
+        print(f"::error::Failed to load articles: {e}")
+        return []
 
-def send_to_power_automate(data):
+def send_to_power_automate(articles):
     """Send data to Power Automate webhook"""
     
     webhook_url = os.environ.get('POWER_AUTOMATE_WEBHOOK')
@@ -27,14 +28,17 @@ def send_to_power_automate(data):
         print("::warning::Skipping Power Automate integration")
         return False
     
-    print(f"Sending {data['total_count']} articles to Power Automate...")
+    if not articles:
+        print("::warning::No articles to send")
+        return True
+    
+    print(f"Sending {len(articles)} articles to Power Automate...")
     
     # Prepare payload
     payload = {
         'timestamp': datetime.now().isoformat(),
-        'executive_summary': data['executive_summary'],
-        'total_articles': data['total_count'],
-        'articles': data['articles']
+        'total_articles': len(articles),
+        'articles': articles
     }
     
     try:
@@ -58,24 +62,20 @@ def send_to_power_automate(data):
 
 def main():
     """Main function"""
-    data = load_summaries()
+    articles = load_articles()
     
-    if not data:
-        print("::error::No data to send")
+    if not articles:
+        print("::error::No articles to send")
         sys.exit(1)
     
-    if data['total_count'] == 0:
-        print("::warning::No articles to send")
-        sys.exit(0)
-    
-    success = send_to_power_automate(data)
+    success = send_to_power_automate(articles)
     
     if not success:
         print("::error::Failed to send data")
         sys.exit(1)
     
     print("\n✓ Workflow complete!")
-    print(f"  Articles scraped: {data['total_count']}")
+    print(f"  Articles scraped: {len(articles)}")
     print(f"  Sent to Power Automate: Success")
 
 if __name__ == "__main__":
