@@ -1,61 +1,47 @@
-name: Daily ESG News Scraper
+name: ESG Daily Digest
 
 on:
   schedule:
-    # Runs at 6:00 AM IST (12:30 AM UTC)
-    - cron: '30 0 * * *'
-  workflow_dispatch:  # Manual trigger for testing
+    - cron: '30 0 * * *'  # 6:00 AM IST
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: 'How many days back to scrape'
+        required: false
+        default: '1'
 
 env:
   POWER_AUTOMATE_WEBHOOK: ${{ secrets.POWER_AUTOMATE_WEBHOOK }}
+  LOOKBACK_DAYS: ${{ github.event.inputs.lookback_days || '1' }}
 
 jobs:
-  scrape-and-summarize:
+  scrape-and-send:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: 'pip'
-      
+
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-      
-      - name: Load keywords from CSV
-        run: |
-          python scripts/fetch_keywords.py
-      
-      - name: Load sources from CSV
-        run: |
-          python scripts/fetch_sources.py
-      
+        run: pip install -r requirements.txt
+
       - name: Scrape all sources
-        id: scrape
-        run: |
-          python scripts/scrape_all.py
-      
+        run: python scripts/scrape_all.py
+
       - name: Send to Power Automate
-        run: |
-          python scripts/send_to_power_automate.py
-      
-      - name: Upload artifacts (for debugging)
+        run: python scripts/send_to_power_automate.py
+
+      - name: Upload debug artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: scraping-results-${{ github.run_number }}
-          path: |
-            data/articles.json
-            logs/
+          name: esg-run-${{ github.run_number }}
+          path: data/articles.json
           retention-days: 7
-      
-      - name: Notify on failure
-        if: failure()
-        run: |
-          echo "::error::ESG scraper failed. Check logs."
